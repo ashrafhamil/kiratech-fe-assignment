@@ -1,6 +1,7 @@
 <template>
-    <div class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-        <div class="bg-white w-full max-w-md rounded-xl shadow-xl p-6 relative">
+    <div class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center"
+        @click.self="$emit('close')">
+        <div class="bg-white w-full max-w-md rounded-xl shadow-xl p-6 relative" ref="modalRef">
             <button class="absolute top-3 right-4 text-gray-400 hover:text-black" @click="$emit('close')">
                 <i class="i-lucide-x w-5 h-5" />
             </button>
@@ -22,8 +23,9 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { onMounted, onUnmounted, ref, computed } from 'vue'
 const props = defineProps({ user: Object })
+const emit = defineEmits(['close'])
 
 const fullName = computed(() => {
     const { first, last } = props.user.name
@@ -32,6 +34,17 @@ const fullName = computed(() => {
 
 const isActive = computed(() => {
     const seed = props.user.login.uuid
-    return seed.charCodeAt(0) % 2 === 0 // simple deterministic toggle
+    return seed.charCodeAt(0) % 2 === 0
+})
+
+const handleEsc = (e) => {
+    if (e.key === 'Escape') emit('close')
+}
+
+onMounted(() => {
+    window.addEventListener('keydown', handleEsc)
+})
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleEsc)
 })
 </script>
