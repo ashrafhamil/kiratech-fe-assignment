@@ -31,9 +31,14 @@
         </div>
 
         <div class="p-4">
-            <div class="flex justify-end mb-4">
+            <div class="flex justify-between mb-4">
                 <input v-model="searchQuery" type="text" placeholder="Search by name or email"
                     class="w-full max-w-sm px-4 py-2 rounded border border-gray-300 focus:ring-2 focus:ring-cyan-500" />
+                <select v-model="sortOption" class="ml-4 px-3 py-2 border rounded border-gray-300 text-sm">
+                    <option value="default">Sort: Default</option>
+                    <option value="az">Sort: Name (A–Z)</option>
+                    <option value="za">Sort: Name (Z–A)</option>
+                </select>
             </div>
 
             <div class="grid grid-cols-5 text-sm text-gray-500 font-semibold px-2 mb-2">
@@ -69,6 +74,7 @@ import UserModal from '@/components/UserModal.vue'
 const users = ref([])
 const selectedUser = ref(null)
 const searchQuery = ref('')
+const sortOption = ref('default')
 
 const fetchUsers = async () => {
     const res = await fetch('https://randomuser.me/api/?results=20')
@@ -86,7 +92,21 @@ const filteredUsers = computed(() => {
     })
 })
 
-const visibleUsers = computed(() => filteredUsers.value.slice(0, 10))
+const sortedUsers = computed(() => {
+    if (sortOption.value === 'default') return filteredUsers.value
+
+    const sorted = [...filteredUsers.value]
+    sorted.sort((a, b) => {
+        const nameA = `${a.name.first} ${a.name.last}`.toLowerCase()
+        const nameB = `${b.name.first} ${b.name.last}`.toLowerCase()
+        return sortOption.value === 'az'
+            ? nameA.localeCompare(nameB)
+            : nameB.localeCompare(nameA)
+    })
+    return sorted
+})
+
+const visibleUsers = computed(() => sortedUsers.value.slice(0, 10))
 
 const openModal = (user) => {
     selectedUser.value = user
