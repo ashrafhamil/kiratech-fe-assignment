@@ -1,12 +1,12 @@
 <template>
     <div class="min-h-screen bg-gray-50 text-gray-800">
         <header
-            class="shadow-sm p-4 flex items-center justify-between px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+            class="p-4 flex items-center justify-between px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
             <div class="flex items-center gap-3">
                 <img src="/src/assets/Logo.png" class="h-10" />
             </div>
             <div class="flex items-center gap-4 text-gray-500">
-                <i class="i-lucide-bell w-5 h-5" />
+                <i class="fa-solid fa-bell w-5 h-5" />
                 <i class="i-lucide-settings w-5 h-5" />
                 <i class="i-lucide-log-out w-5 h-5" />
             </div>
