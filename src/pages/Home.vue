@@ -1,6 +1,7 @@
 <template>
-    <div class="min-h-screen bg-gray-100 text-gray-800">
-        <header class="bg-white shadow-sm p-4 flex items-center justify-between">
+    <div class="min-h-screen bg-gray-50 text-gray-800">
+        <header
+            class="shadow-sm p-4 flex items-center justify-between px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
             <div class="flex items-center gap-3">
                 <img src="/src/assets/Logo.png" class="h-10" />
             </div>
@@ -11,26 +12,28 @@
             </div>
         </header>
 
-        <div class="bg-cyan-500 p-6 text-white flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <img src="/src/assets/Avatar.png"
-                    class="w-16 h-16" />
-                <div>
-                    <div class="text-2xl font-bold">John Doe</div>
-                    <div class="text-sm opacity-80">Last online: 2 days ago</div>
+        <!-- Full-width blue bar -->
+        <div class="bg-cyan-500 py-6 text-white w-full">
+            <div class="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <img src="/src/assets/Avatar.png" class="w-16 h-16" />
+                    <div>
+                        <div class="text-2xl font-bold">John Doe</div>
+                        <div class="text-sm opacity-80">Last online: 2 days ago</div>
+                    </div>
                 </div>
-            </div>
-            <div class="flex gap-3">
-                <button class="bg-white text-cyan-600 px-4 py-2 rounded flex items-center gap-2">
-                    <i class="i-lucide-send w-4 h-4" /> Send Message
-                </button>
-                <button class="border border-white px-4 py-2 rounded flex items-center gap-2">
-                    <i class="i-lucide-user-plus w-4 h-4" /> Add Friend
-                </button>
+                <div class="flex gap-3">
+                    <button class="bg-white text-cyan-600 px-4 py-2 rounded flex items-center gap-2">
+                        <i class="i-lucide-send w-4 h-4" /> Send Message
+                    </button>
+                    <button class="border border-white px-4 py-2 rounded flex items-center gap-2">
+                        <i class="i-lucide-user-plus w-4 h-4" /> Add Friend
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="p-4">
+        <div class="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto py-6">
             <div class="flex justify-between mb-4">
                 <input v-model="searchQuery" type="text" placeholder="Search by name or email"
                     class="w-full max-w-sm px-4 py-2 rounded border border-gray-300 focus:ring-2 focus:ring-cyan-500" />
@@ -94,7 +97,6 @@ const filteredUsers = computed(() => {
 
 const sortedUsers = computed(() => {
     if (sortOption.value === 'default') return filteredUsers.value
-
     const sorted = [...filteredUsers.value]
     sorted.sort((a, b) => {
         const nameA = `${a.name.first} ${a.name.last}`.toLowerCase()
