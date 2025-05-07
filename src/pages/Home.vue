@@ -2,8 +2,7 @@
     <div class="min-h-screen bg-gray-100 text-gray-800">
         <header class="bg-white shadow-sm p-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <img src="/src/assets/logo.svg" class="h-10" />
-                <h1 class="text-xl font-bold">KIRATECH</h1>
+                <img src="/src/assets/Logo.png" class="h-10" />
             </div>
             <div class="flex items-center gap-4 text-gray-500">
                 <i class="i-lucide-bell w-5 h-5" />
@@ -14,7 +13,8 @@
 
         <div class="bg-cyan-500 p-6 text-white flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <img src="https://randomuser.me/api/portraits/men/75.jpg" class="w-16 h-16 rounded-full" />
+                <img src="/src/assets/Avatar.png"
+                    class="w-16 h-16" />
                 <div>
                     <div class="text-2xl font-bold">John Doe</div>
                     <div class="text-sm opacity-80">Last online: 2 days ago</div>

@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-5 items-center bg-white rounded-lg shadow-sm px-4 py-3 hover:ring-2 ring-cyan-500 cursor-pointer"
+    <div class="grid grid-cols-5 items-center bg-white rounded-lg shadow-sm px-4 py-4 hover:ring-2 ring-cyan-500 cursor-pointer"
         @click="$emit('click')">
         <div>{{ formattedDate }}</div>
         <div class="font-semibold text-cyan-800">{{ fullName }}</div>
