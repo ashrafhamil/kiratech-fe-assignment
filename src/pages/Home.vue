@@ -31,6 +31,11 @@
         </div>
 
         <div class="p-4">
+            <div class="flex justify-end mb-4">
+                <input v-model="searchQuery" type="text" placeholder="Search by name or email"
+                    class="w-full max-w-sm px-4 py-2 rounded border border-gray-300 focus:ring-2 focus:ring-cyan-500" />
+            </div>
+
             <div class="grid grid-cols-5 text-sm text-gray-500 font-semibold px-2 mb-2">
                 <div>Date</div>
                 <div>Name</div>
@@ -39,9 +44,10 @@
                 <div>Email</div>
             </div>
 
-            <div class="space-y-2">
-                <UserCard v-for="user in users" :key="user.login.uuid" :user="user" @click="openModal(user)" />
+            <div v-if="visibleUsers.length > 0" class="space-y-2">
+                <UserCard v-for="user in visibleUsers" :key="user.login.uuid" :user="user" @click="openModal(user)" />
             </div>
+            <div v-else class="text-center text-gray-400 py-12">No users found</div>
 
             <div class="flex justify-center mt-6">
                 <button class="bg-cyan-500 text-white px-6 py-2 rounded hover:bg-cyan-600 flex items-center gap-2"
@@ -56,18 +62,31 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import UserCard from '@/components/UserCard.vue'
 import UserModal from '@/components/UserModal.vue'
 
 const users = ref([])
 const selectedUser = ref(null)
+const searchQuery = ref('')
 
 const fetchUsers = async () => {
     const res = await fetch('https://randomuser.me/api/?results=20')
     const data = await res.json()
     users.value = data.results
 }
+
+const filteredUsers = computed(() => {
+    if (!searchQuery.value.trim()) return users.value
+    const q = searchQuery.value.toLowerCase()
+    return users.value.filter(user => {
+        const name = `${user.name.first} ${user.name.last}`.toLowerCase()
+        const email = user.email.toLowerCase()
+        return name.includes(q) || email.includes(q)
+    })
+})
+
+const visibleUsers = computed(() => filteredUsers.value.slice(0, 10))
 
 const openModal = (user) => {
     selectedUser.value = user
