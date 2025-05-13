@@ -6,8 +6,8 @@
             </div>
             <div class="flex items-center gap-4 text-gray-500">
                 <i class="fa-solid fa-bell w-5 h-5" />
-                <i class="i-lucide-settings w-5 h-5" />
-                <i class="i-lucide-log-out w-5 h-5" />
+                <i class="fa-solid fa-gear w-5 h-5" />
+                <i class="fa-solid fa-arrow-right-from-bracket w-5 h-5" />
             </div>
         </header>
 
@@ -23,10 +23,10 @@
                 </div>
                 <div class="flex gap-3">
                     <button class="bg-white text-cyan-600 px-4 py-2 rounded flex items-center gap-2">
-                        <i class="i-lucide-send w-4 h-4" /> Send Message
+                        <i class="fa-solid fa-paper-plane w-4 h-4" /> Send Message
                     </button>
                     <button class="border border-white px-4 py-2 rounded flex items-center gap-2">
-                        <i class="i-lucide-user-plus w-4 h-4" /> Add Friend
+                        <i class="fa-solid fa-user-plus w-4 h-4" /> Add Friend
                     </button>
                 </div>
             </div>
@@ -34,8 +34,12 @@
 
         <div class="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto py-6">
             <div class="flex justify-between mb-4">
-                <input v-model="searchQuery" type="text" placeholder="Search by name or email"
-                    class="w-full max-w-sm px-4 py-2 rounded border border-gray-300 focus:ring-2 focus:ring-cyan-500" />
+                <div class="relative w-full max-w-sm">
+                    <input v-model="searchQuery" type="text" placeholder="Search by name or email"
+                        class="w-full pr-10 px-4 py-2 rounded border border-gray-300 focus:ring-2 focus:ring-cyan-500" />
+                    <i class="fa-solid fa-magnifying-glass absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+
                 <select v-model="sortOption" class="ml-4 px-3 py-2 border rounded border-gray-300 text-sm">
                     <option value="default">Sort: Default</option>
                     <option value="az">Sort: Name (A–Z)</option>
@@ -73,7 +77,7 @@
             <div class="flex justify-center mt-6">
                 <button class="bg-cyan-500 text-white px-6 py-2 rounded hover:bg-cyan-600 flex items-center gap-2"
                     @click="fetchUsers">
-                    <i class="i-lucide-refresh-ccw w-4 h-4" /> Refresh
+                    <i class="fa-solid fa-arrows-rotate w-4 h-4" /> Refresh
                 </button>
             </div>
         </div>
@@ -83,7 +87,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import UserCard from '@/components/UserCard.vue'
 import UserModal from '@/components/UserModal.vue'
 
@@ -93,6 +97,10 @@ const searchQuery = ref('')
 const sortOption = ref('default')
 const currentPage = ref(1)
 const itemsPerPage = 10
+
+watch([searchQuery, sortOption], () => {
+    currentPage.value = 1
+})
 
 const fetchUsers = async () => {
     const res = await fetch('https://randomuser.me/api/?results=20')

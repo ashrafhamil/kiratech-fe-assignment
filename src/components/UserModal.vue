@@ -3,7 +3,7 @@
         @click.self="$emit('close')">
         <div class="bg-white w-full max-w-md rounded-xl shadow-xl p-6 relative" ref="modalRef">
             <button class="absolute top-3 right-4 text-gray-400 hover:text-black" @click="$emit('close')">
-                <i class="i-lucide-x w-5 h-5" />
+                <i class="fa-solid fa-xmark w-5 h-5" />
             </button>
 
             <div class="flex flex-col items-center text-center">
