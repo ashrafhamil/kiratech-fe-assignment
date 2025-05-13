@@ -1,7 +1,6 @@
 <template>
     <div class="min-h-screen bg-gray-50 text-gray-800">
-        <header
-            class="p-4 flex items-center justify-between px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+        <header class="p-4 flex items-center justify-between px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
             <div class="flex items-center gap-3">
                 <img src="/src/assets/Logo.png" class="h-10" />
             </div>
@@ -52,10 +51,24 @@
                 <div>Email</div>
             </div>
 
-            <div v-if="visibleUsers.length > 0" class="space-y-2">
-                <UserCard v-for="user in visibleUsers" :key="user.login.uuid" :user="user" @click="openModal(user)" />
+            <div v-if="paginatedUsers.length > 0" class="space-y-2">
+                <UserCard v-for="user in paginatedUsers" :key="user.login.uuid" :user="user" @click="openModal(user)" />
             </div>
             <div v-else class="text-center text-gray-400 py-12">No users found</div>
+
+            <div class="flex justify-end mt-4 gap-2">
+                <button class="px-3 py-1 rounded bg-gray-200 text-sm" :disabled="currentPage === 1"
+                    @click="currentPage--">
+                    Prev
+                </button>
+                <span class="text-sm text-gray-600">
+                    Page {{ currentPage }} of {{ totalPages }}
+                </span>
+                <button class="px-3 py-1 rounded bg-gray-200 text-sm" :disabled="currentPage === totalPages"
+                    @click="currentPage++">
+                    Next
+                </button>
+            </div>
 
             <div class="flex justify-center mt-6">
                 <button class="bg-cyan-500 text-white px-6 py-2 rounded hover:bg-cyan-600 flex items-center gap-2"
@@ -78,6 +91,8 @@ const users = ref([])
 const selectedUser = ref(null)
 const searchQuery = ref('')
 const sortOption = ref('default')
+const currentPage = ref(1)
+const itemsPerPage = 10
 
 const fetchUsers = async () => {
     const res = await fetch('https://randomuser.me/api/?results=20')
@@ -108,7 +123,15 @@ const sortedUsers = computed(() => {
     return sorted
 })
 
-const visibleUsers = computed(() => sortedUsers.value.slice(0, 10))
+const paginatedUsers = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage
+    const end = start + itemsPerPage
+    return sortedUsers.value.slice(start, end)
+})
+
+const totalPages = computed(() =>
+    Math.ceil(sortedUsers.value.length / itemsPerPage)
+)
 
 const openModal = (user) => {
     selectedUser.value = user
